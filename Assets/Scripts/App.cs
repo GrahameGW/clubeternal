@@ -6,9 +6,9 @@ using System.Collections.Generic;
 namespace ClubEternal
 {
 
-    public class Game : MonoBehaviour
+    public class App : MonoBehaviour
     {
-        public static Game Instance { get; private set; }
+        public static App Instance { get; private set; }
 
         [SerializeField] string mainMenuSceneName;
         [SerializeField] string gameSceneName;
@@ -61,10 +61,13 @@ namespace ClubEternal
 
         public void InitNewGame()
         {
-            {
-                loadQueue.Enqueue(loadingSplashSceneName);
-                loadQueue.Enqueue(gameSceneName);
-            }
+            loadQueue.Enqueue(loadingSplashSceneName);
+            loadQueue.Enqueue(gameSceneName);
         }
+    }
+
+    public class GameManager : MonoBehaviour 
+    {
+        // [SerializeField] 
     }
 }

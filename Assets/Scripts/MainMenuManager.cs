@@ -6,7 +6,7 @@ namespace ClubEternal
     {
         public void StartNewGame()
         {
-            Game.Instance.InitNewGame();
+            App.Instance.InitNewGame();
         }
 
         public void OpenCredits()
