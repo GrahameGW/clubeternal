@@ -1,21 +1,70 @@
+using UnityEngine.SceneManagement;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace ClubEternal
 {
+
     public class Game : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        public static Game Instance { get; private set; }
+
+        [SerializeField] string mainMenuSceneName;
+        [SerializeField] string gameSceneName;
+        [SerializeField] string loadingSplashSceneName;
+
+        private Queue<string> loadQueue;
+        private bool isLoading = false;
+
+        private void Awake()
         {
-        
+            if (Instance != null)
+            {
+                Destroy(gameObject);
+            }
+            else
+            {
+                Instance = this;
+                DontDestroyOnLoad(gameObject);
+            }
+
+            loadQueue = new Queue<string>();
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Start()
         {
-        
+            loadQueue.Enqueue(loadingSplashSceneName);
+            loadQueue.Enqueue(mainMenuSceneName);
+        }
+
+        private void Update()
+        {
+            if (!isLoading && loadQueue.Count > 0)
+            {
+                StartCoroutine(LoadSceneInBackground(loadQueue.Dequeue()));
+            }
+        }
+
+        private IEnumerator LoadSceneInBackground(string sceneName)
+        {
+            isLoading = true;
+            AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+
+            while (!asyncLoad.isDone)
+            {
+                yield return null;
+            }
+
+            isLoading = false;
+        }
+
+        public void InitNewGame()
+        {
+            {
+                loadQueue.Enqueue(loadingSplashSceneName);
+                loadQueue.Enqueue(gameSceneName);
+            }
         }
     }
 }
