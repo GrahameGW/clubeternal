@@ -10,7 +10,7 @@ namespace ClubEternal
         {
             manager = FindAnyObjectByType<GameManager>();
             manager.RoundEndedHandler += OnRoundEnded;
-
+            gameObject.SetActive(false);
         }
 
         private void OnDestroy()

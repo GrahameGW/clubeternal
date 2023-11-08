@@ -8,9 +8,14 @@ namespace ClubEternal
         public float PercentElapsed {
             get => levelTimeElapsed / levelDurationSec;
         }
+        public bool IsGamePaused {
+            get => state == GameState.SimPaused;
+        }
 
         public Action RoundEndedHandler;
         public Action RoundStartedHandler;
+        public Action GamePausedHandler;
+        public Action GameResumedHandler;
 
         [Min(0.000001f)]
         [SerializeField] float levelDurationSec;
@@ -21,6 +26,7 @@ namespace ClubEternal
         private enum GameState
         {
             SimActive,
+            SimPaused,
             ShopScreen
         }
 
@@ -29,6 +35,18 @@ namespace ClubEternal
             levelTimeElapsed = 0;
             state = GameState.SimActive;
             RoundStartedHandler?.Invoke();
+        }
+
+        public void PauseGame()
+        {
+            state = GameState.SimPaused;
+            GamePausedHandler?.Invoke();
+        }
+
+        public void ResumeGame()
+        {
+            state = GameState.SimActive;
+            GameResumedHandler?.Invoke();
         }
 
         private void EndCurrentRound()
