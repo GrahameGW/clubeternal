@@ -10,6 +10,7 @@ namespace ClubEternal
         }
 
         public Action RoundEndedHandler;
+        public Action RoundStartedHandler;
 
         [Min(0.000001f)]
         [SerializeField] float levelDurationSec;
@@ -26,6 +27,14 @@ namespace ClubEternal
         public void StartNextRound()
         {
             levelTimeElapsed = 0;
+            state = GameState.SimActive;
+            RoundStartedHandler?.Invoke();
+        }
+
+        private void EndCurrentRound()
+        {
+            RoundEndedHandler?.Invoke();
+            state = GameState.ShopScreen;
         }
 
         private void Update()
@@ -35,8 +44,7 @@ namespace ClubEternal
                 levelTimeElapsed += Time.deltaTime;
                 if (PercentElapsed >= 1f)
                 {
-                    RoundEndedHandler?.Invoke();
-                    state = GameState.ShopScreen;
+                    EndCurrentRound();
                 }
             }
         }

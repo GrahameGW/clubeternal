@@ -11,7 +11,7 @@ namespace ClubEternal
 
         private void Start()
         {
-            manager = FindObjectOfType<GameManager>();
+            manager = FindAnyObjectByType<GameManager>();
         }
 
         private void Update()
