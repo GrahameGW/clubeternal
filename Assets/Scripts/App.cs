@@ -65,9 +65,4 @@ namespace ClubEternal
             loadQueue.Enqueue(gameSceneName);
         }
     }
-
-    public class GameManager : MonoBehaviour 
-    {
-        // [SerializeField] 
-    }
 }
